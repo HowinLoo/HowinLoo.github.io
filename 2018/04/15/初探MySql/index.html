@@ -1,0 +1,367 @@
+
+
+
+
+
+
+
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <meta name="author" content="HowinLoo">
+  
+  
+  
+  
+    <meta name="description" content="前言
+本身专业需要一些数据库的知识
+有上过一学期的微软的数据库知识，但是有点忘记了
+看了一遍各种教程之后，发现数据库的语法大同小异
+
+安装MySql我使用的是直接将压缩包下载后直接就可以用了，但是有一个不好的地方就是需要自己配置一些MySQL。（爱捣鼓）当然你也可以用Recommended Download（建议下载）的MSI直接用安装包，好处就是一直下一步就可以。
+
+环境：WIN10/WI...">
+  
+  <title>初探MySql [ Later Fork's Studio ]</title>
+  
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+  
+  
+  <link rel="stylesheet" href="/css/random.css">
+<link rel="stylesheet" href="/css/vegas.min.css">
+<link rel="stylesheet" href="/css/highlight-railscasts.css">
+<link rel="stylesheet" href="/css/jquery.fancybox.css">
+<link rel="stylesheet" href="/css/iconfont/iconfont.css">
+<link rel="stylesheet" href="/css/jquery.fancybox-thumbs.css">
+<link rel="stylesheet" href="/css/plyr.css">
+  
+</head>
+
+<body>
+<div class="side-navigate hide-area">
+  
+  
+    <div class="item next">
+      <a href="/2017/11/28/Scrapy爬虫框架/">
+        <div class="item-icon"></div>
+      </a>
+      <div class="item-title">
+        Scrapy爬虫框架
+      </div>
+    </div>
+  
+</div>
+<div id="outer-container" class="hide-area">
+<div id="container">
+  <div id="menu-outer" class="slide-down">
+    <div id="menu-inner">
+      <div id="brand">
+        
+        <a onClick="openUserCard()">
+          <img id="avatar" src="https://s1.ax1x.com/2017/10/08/3gPL6.jpg"/>
+          <div id="homelink">Later Fork's Studio</div>
+        </a>
+      </div>
+      <div id="menu-list">
+        <ul>
+        
+        
+          
+            <li>
+          
+            <a href="/index.html">Home</a>
+            
+          </li>
+        
+          
+            <li>
+          
+            <a href="/archives">Archives</a>
+            
+          </li>
+        
+          
+            <li>
+          
+            <a href="/tags">Tags</a>
+            
+          </li>
+        
+          
+            <li>
+          
+            <a href="/categories">Categories</a>
+            
+          </li>
+        
+          
+            <li>
+          
+            <a href="/about">About</a>
+            
+          </li>
+        
+        </ul>
+      </div>
+      <div id="show-menu">
+        <button>Menu</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="content-outer">
+    <div id="content-inner">
+      
+      
+  <article id="post">
+    <h1>初探MySql</h1>
+    <p class="page-title-sub">
+      <span id = "post-title-date">撰写于 2018-04-15</span>
+      
+        <span id = "post-title-updated">修改于 2018-04-15</span>
+      
+      
+      <span id = "post-title-categories">分类
+      
+      
+        
+        
+        <a href="/categories/笔记/">笔记</a>
+      
+      </span>
+      
+      
+      <span id = "post-title-tags">
+      标签
+      
+      
+        
+        
+        <a href="/tags/MySql/">MySql</a>
+      
+      </span>
+      
+    </p>
+    
+    <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><ul>
+<li>本身专业需要一些数据库的知识</li>
+<li>有上过一学期的微软的数据库知识，但是有点忘记了</li>
+<li>看了一遍各种教程之后，发现数据库的语法大同小异</li>
+</ul>
+<h2 id="安装MySql"><a href="#安装MySql" class="headerlink" title="安装MySql"></a>安装MySql</h2><p>我使用的是直接将压缩包下载后直接就可以用了，但是有一个不好的地方就是需要自己配置一些MySQL。（爱捣鼓）当然你也可以用Recommended Download（建议下载）的MSI直接用安装包，好处就是一直下一步就可以。</p>
+<ul>
+<li>环境：WIN10/WIN7</li>
+<li>下载：<a href="https://dev.mysql.com/downloads/mysql/" target="_blank" rel="external">Download MySQL Community Server</a></li>
+<li>版本：mysql-5.7.21-win32.zip</li>
+<li>设置环境变量（解压后）：D:\…\mysql-5.7.21-win32\bin</li>
+<li>新建data文件夹：D:\…\mysql-5.7.21-win32</li>
+<li>新建my-default.ini：D:\…\mysql-5.7.21-win32<ul>
+<li>在my-default.ini输入(<br>注意参照basedir、datadir配置自身路径):</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight objc"><figcaption><span>my-default.ini</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">[mysqld]  </div><div class="line">port = <span class="number">3306</span></div><div class="line">basedir=D:/.../mysql<span class="number">-5.7</span><span class="number">.21</span>-win32</div><div class="line">datadir=D:.../mysql<span class="number">-5.7</span><span class="number">.21</span>-win32/data</div><div class="line">max_connections=<span class="number">200</span></div><div class="line">character-set-server=utf8</div><div class="line"><span class="keyword">default</span>-storage-engine=INNODB</div><div class="line">sql_mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES</div><div class="line">[mysql]</div><div class="line"><span class="keyword">default</span>-character-set=utf8</div></pre></td></tr></table></figure>
+<h2 id="用户配置"><a href="#用户配置" class="headerlink" title="用户配置"></a>用户配置</h2><p>以管理员身份运行cmd输入,如果出问题了，请自行百度解决。</p>
+<figure class="highlight objc"><figcaption><span>cmd</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">&gt;cd D:\\...\mysql<span class="number">-5.7</span><span class="number">.21</span>-win32\bin</div><div class="line">&gt;mysqld -install</div><div class="line">&gt;net start mysql</div></pre></td></tr></table></figure>
+<p>添加自己为MySQL用户，在<strong>mysql数据库</strong>的<strong>user表</strong>添加新用户。<br><figure class="highlight"><figcaption><span>cdm</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">mysql -u root -p</div><div class="line">Enter password:*******</div><div class="line">mysql&gt; use mysql;</div><div class="line">Database changed</div><div class="line"></div><div class="line">mysql&gt; GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP</div><div class="line">   	-&gt; ON TUTORIALS.*</div><div class="line">   	-&gt; TO 'user_name'@'localhost'</div><div class="line">   	-&gt; IDENTIFIED BY 'password';</div></pre></td></tr></table></figure></p>
+
+  </article>
+  <div class="random-toc-area">
+  <button class="btn-hide-toc btn-hide-toc-show" style="display: none" onclick="TOCToggle()">显示目录</button>
+  <button class="btn-hide-toc btn-hide-toc-hide" onclick="TOCToggle()">隐藏目录</button>
+  <div class="random-toc">
+    <h2>目录</h2>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装MySql"><span class="toc-text">安装MySql</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#用户配置"><span class="toc-text">用户配置</span></a></li></ol>
+  </div>
+</div>
+
+  
+<nav id="pagination">
+  
+
+  
+
+  
+    <a href="/2017/11/28/Scrapy爬虫框架/" class="next">下一篇 Scrapy爬虫框架 &rarr;</a>
+  
+</nav>
+
+  <!-- JiaThis Button BEGIN -->
+
+<!-- JiaThis Button END -->
+
+
+      
+      
+    </div>
+  </div>
+
+  <div id="bottom-outer">
+    <div id="bottom-inner">
+      Site by HowinLoo using
+      <a href="http://hexo.io">Hexo</a> & <a href="https://github.com/stiekel/hexo-theme-random">Random</a>
+      <br>
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+
+<div id="user-card">
+  <div class="center-field">
+    <img class="avatar" src="https://s1.ax1x.com/2017/10/08/3gPL6.jpg">
+    <p id="description">Keep It Simple Stupid</p>
+    <ul class="social-icon">
+  
+  
+    <li>
+      <a href="http://weibo.com/2102659825/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1">
+        
+          <i class="icon iconfont weibo">&#xe602;</i>
+        
+      </a>
+    </li>
+  
+    <li>
+      <a href="https://www.instagram.com/howin_loo/">
+        
+          <i class="icon iconfont instagram">&#xe613;</i>
+        
+      </a>
+    </li>
+  
+    <li>
+      <a href="https://github.com/HowinLoo">
+        
+          <i class="icon iconfont github">&#xe606;</i>
+        
+      </a>
+    </li>
+  
+    <li>
+      <a href="http://chensd.com/feed">
+        
+          <i class="icon iconfont rss">&#xe60e;</i>
+        
+      </a>
+    </li>
+  
+</ul>
+  </div>
+</div>
+
+
+<div id="btn-view">Hide</div>
+
+<script>
+// is trigger analytics / tongji script
+var isIgnoreHost = false;
+
+if(window && window.location && window.location.host) {
+  isIgnoreHost = ["localhost","127.0.0.1"].some(function(address){
+    return 0 === window.location.host.indexOf(address);
+  });
+}
+
+var isTriggerAnalytics = !( true && isIgnoreHost );
+
+</script>
+
+
+
+
+  
+  
+    <script src="/js/jquery-2.2.3.min.js"></script>
+  
+    <script src="/js/vegas.min.js"></script>
+  
+    <script src="/js/random.js"></script>
+  
+    <script src="/js/highlight.pack.js"></script>
+  
+    <script src="/js/jquery.mousewheel.pack.js"></script>
+  
+    <script src="/js/jquery.fancybox.pack.js"></script>
+  
+    <script src="/js/jquery.fancybox-thumbs.js"></script>
+  
+    <script src="/js/plyr.js"></script>
+  
+
+<script>
+
+  // fancybox
+  var backgroundImages = [];
+  
+  $('#post').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox') || $(this).parent().hasClass('fancybox-thumb')) return;
+      var alt = this.alt || this.title;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'post' + i);
+    });
+  });
+  $(".fancybox").fancybox();
+
+var vegasConfig = {"preload­Image":true,"transition":["slideLeft2","slideRight2","flash2"],"timer":true,"delay":5000,"shuffle":true,"count":28};
+var unsplashConfig = {"gravity":"north"};
+// is show background images
+var turnoffBackgroundImage = false;
+
+
+
+  turnoffBackgroundImage = true;
+
+
+var backgroundColor = "34495E";
+
+$(".fancybox-thumb").fancybox({
+  prevEffect: 'none',
+  nextEffect: 'none',
+  helpers: {
+    title: {
+      type: 'outside'
+    },
+    thumbs: {
+      width: 50,
+      height: 50
+    }
+  }
+});
+
+// show video with plyr
+$(".video-container iframe").each(function(i){
+  var url = $(this).attr('src');
+  var id = url.split('/').pop();
+  var plyrContainer = document.createElement('div');
+  plyrContainer.className = 'plyr';
+  var plyrElement = document.createElement('div');
+  plyrElement.dataset.videoId = id;
+  switch(true) {
+    case url.search('youtube.com') >= 0:
+      plyrElement.dataset.type = 'youtube';
+      break;
+    case url.search('vimeo.com') >= 0:
+      plyrElement.dataset.type = 'vimeo';
+      break;
+    default:
+      return;
+  };
+  plyrContainer.appendChild(plyrElement);
+  $(this).parent().html(plyrContainer);
+});
+plyr.setup('.plyr', {iconUrl: '/css/sprite.svg'});
+</script>
+</body>
+</html>
+

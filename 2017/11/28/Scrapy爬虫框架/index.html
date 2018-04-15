@@ -1,0 +1,479 @@
+
+
+
+
+
+
+
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <meta name="author" content="HowinLoo">
+  
+  
+  
+  
+    <meta name="description" content="个人想法：
+翻译文件源自Scrapy Documentation(Release 1.4.0)
+暂时选定了其中的FirstSteps中的Scrapy Tutorial
+督促自己将官文看完，提升自己英语水平
+
+官文的优点：
+实例简单
+易于上手
+适合小白
+
+前言：在此教程中，我们假定Scrapy已经安装在你们的系统中。如果还没有安装的话，请查看安装教程。我们将会爬取quotes.toscrape...">
+  
+  <title>Scrapy爬虫框架 [ Later Fork's Studio ]</title>
+  
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+  
+  
+  <link rel="stylesheet" href="/css/random.css">
+<link rel="stylesheet" href="/css/vegas.min.css">
+<link rel="stylesheet" href="/css/highlight-railscasts.css">
+<link rel="stylesheet" href="/css/jquery.fancybox.css">
+<link rel="stylesheet" href="/css/iconfont/iconfont.css">
+<link rel="stylesheet" href="/css/jquery.fancybox-thumbs.css">
+<link rel="stylesheet" href="/css/plyr.css">
+  
+</head>
+
+<body>
+<div class="side-navigate hide-area">
+  
+    <div class="item prev">
+      <a href="/2018/04/15/初探MySql/">
+        <div class="item-icon"></div>
+      </a>
+      <div class="item-title">
+        初探MySql
+      </div>
+    </div>
+  
+  
+    <div class="item next">
+      <a href="/2017/10/06/非程序员15分钟三步Github-Hexo快速搭建免费个人博客/">
+        <div class="item-icon"></div>
+      </a>
+      <div class="item-title">
+        非程序员15分钟三步Github-Hexo快速搭建免费个人博客
+      </div>
+    </div>
+  
+</div>
+<div id="outer-container" class="hide-area">
+<div id="container">
+  <div id="menu-outer" class="slide-down">
+    <div id="menu-inner">
+      <div id="brand">
+        
+        <a onClick="openUserCard()">
+          <img id="avatar" src="https://s1.ax1x.com/2017/10/08/3gPL6.jpg"/>
+          <div id="homelink">Later Fork's Studio</div>
+        </a>
+      </div>
+      <div id="menu-list">
+        <ul>
+        
+        
+          
+            <li>
+          
+            <a href="/index.html">Home</a>
+            
+          </li>
+        
+          
+            <li>
+          
+            <a href="/archives">Archives</a>
+            
+          </li>
+        
+          
+            <li>
+          
+            <a href="/tags">Tags</a>
+            
+          </li>
+        
+          
+            <li>
+          
+            <a href="/categories">Categories</a>
+            
+          </li>
+        
+          
+            <li>
+          
+            <a href="/about">About</a>
+            
+          </li>
+        
+        </ul>
+      </div>
+      <div id="show-menu">
+        <button>Menu</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="content-outer">
+    <div id="content-inner">
+      
+      
+  <article id="post">
+    <h1>Scrapy爬虫框架</h1>
+    <p class="page-title-sub">
+      <span id = "post-title-date">撰写于 2017-11-28</span>
+      
+        <span id = "post-title-updated">修改于 2017-12-05</span>
+      
+      
+      <span id = "post-title-categories">分类
+      
+      
+        
+        
+        <a href="/categories/爬虫/">爬虫</a>
+      
+      </span>
+      
+      
+      <span id = "post-title-tags">
+      标签
+      
+      
+        
+        
+        <a href="/tags/Python/">Python</a>
+      
+        
+          /
+        
+        
+        <a href="/tags/Scrapy/">Scrapy</a>
+      
+        
+          /
+        
+        
+        <a href="/tags/翻译/">翻译</a>
+      
+      </span>
+      
+    </p>
+    
+    <h1 id="个人想法："><a href="#个人想法：" class="headerlink" title="个人想法："></a>个人想法：</h1><ul>
+<li>翻译文件源自Scrapy Documentation(Release 1.4.0)</li>
+<li>暂时选定了其中的FirstSteps中的Scrapy Tutorial</li>
+<li>督促自己将官文看完，提升自己英语水平</li>
+</ul>
+<h1 id="官文的优点："><a href="#官文的优点：" class="headerlink" title="官文的优点："></a>官文的优点：</h1><ul>
+<li>实例简单</li>
+<li>易于上手</li>
+<li>适合小白</li>
+</ul>
+<h1 id="前言："><a href="#前言：" class="headerlink" title="前言："></a>前言：</h1><p>在此教程中，我们假定Scrapy已经安装在你们的系统中。如果还没有安装的话，请查看安装教程。<br>我们将会爬取<a href="http://quotes.toscrape.com/" target="_blank" rel="external">quotes.toscrape.com</a>网站，这个网站罗列了一些著名作者的语录。</p>
+<p>此教程将带领大家完成如下任务：</p>
+<ol>
+<li><strong>创建一个Scrapy项目</strong></li>
+<li><strong>写一个爬虫爬取一个网站与提取网站的相关数据</strong></li>
+<li><strong>以命令行的方式输出爬取的数据</strong></li>
+<li><strong>修改爬虫去递归（循环）爬取网站的其他链接</strong></li>
+<li><strong>使用爬虫命令行参数</strong></li>
+</ol>
+<p>Scrapy爬虫框架是使用Python语言编写的。如果你是第一次接触计算机编程语言，你可能想要先了解一下Python语言是一门怎样的计算机语言，以便你更好的使用Scrapy爬虫框架。<br>如果你早已熟悉其他的计算机语言，并希望更有效率学习Python语言，我们建议你通读<a href="http://www.diveintopython3.net/" target="_blank" rel="external">Dive Into Python 3</a>。或者，你也可以阅读<a href="https://docs.python.org/3/tutorial" target="_blank" rel="external">Python Tutorial</a>。<br>如果你是编程新手，并想从Python着手学习，你可能需要寻求一本有意义的在线电子书<a href="https://learnpythonthehardway.org/book/" target="_blank" rel="external">Learn Python The Hard Way</a>，你也可以看一下<a href="https://wiki.python.org/moin/BeginnersGuide/NonProgrammers" target="_blank" rel="external">This List Of Python Resources For Non-Programmers</a></p>
+<h1 id="创建爬虫项目"><a href="#创建爬虫项目" class="headerlink" title="创建爬虫项目"></a>创建爬虫项目</h1><p>在你开始爬取网站之前，你得先建立一个Scrapy项目。</p>
+<p>在命令行中输入你要建立项目和存放代码的路径<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ cd c:/project/filepath</div></pre></td></tr></table></figure><br>然后运行：<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ scrapy startproject tutorial</div></pre></td></tr></table></figure></p>
+<p><strong><em>startproject</em></strong>命令将会建立一个名为<strong>tutorial</strong>项目，而文件树如下图：</p>
+<ul>
+<li><p><em>tutoral/</em></p>
+<ul>
+<li><p><em>scrapy.cfg</em>    #部署配置文件</p>
+</li>
+<li><p><em>tutorial/</em>    #项目的Python模块，你将会从这导入的的代码模块</p>
+<ul>
+<li><em>init.py</em>    #初始化文件</li>
+<li><em>items.py</em>    #定义项目的文件</li>
+<li><em>pipelines.py</em>    #项目的管道文件</li>
+<li><em>setting.py</em>    #项目设置文件</li>
+<li><em>spider/</em>    #存放爬虫的文件夹 <ul>
+<li><em>init.py</em></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="我们的第一个爬虫"><a href="#我们的第一个爬虫" class="headerlink" title="我们的第一个爬虫"></a>我们的第一个爬虫</h1><p><em>Scrapy</em> 使用你定义爬虫的类来从网站中爬取信息。你定义爬虫的类必须是 <em>scrapy.Spider</em> 的子类，并且需要定义此子类的初始化请求、如何在页面中爬取所需的链接、如何解析爬取到的页面内容并且提取你需要的数据。</p>
+<p>在你的 <em>tutorial/spider</em> 路径中创建一个名为 <em>quotes_spider.py</em> 文件，并保存在你的项目中，我们的第一个爬虫的代码如下:<br><figure class="highlight"><figcaption><span>quotes_spider.py</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">import scrapy</div><div class="line"></div><div class="line"><span class="keyword">class</span> QuotesSpider(scrapy.Spider):</div><div class="line">    name = <span class="string">"quotes"</span></div><div class="line"></div><div class="line">    def  start_requests(<span class="keyword">self</span>):</div><div class="line">         urls = [</div><div class="line">             'http://quotes.toscrape.com/page/1/',</div><div class="line">             'http://quotes.toscrape.com/page/2/',</div><div class="line">         ]</div><div class="line">         <span class="keyword">for</span> url <span class="keyword">in</span> urls:</div><div class="line">             yield scrapy.Request(url = url, callback = <span class="keyword">self</span>.parse)</div><div class="line">    </div><div class="line">    def parse(<span class="keyword">self</span>, response):</div><div class="line">        page = response.url.split(<span class="string">"/"</span>)[<span class="number">-2</span>]</div><div class="line">        filename = 'quotes-%s.html' % page</div><div class="line">        with open(filename, 'wb') as f:</div><div class="line">            f.write(response.body)</div><div class="line">        self.log('Save file %s' % filename)</div></pre></td></tr></table></figure></p>
+<p>正如你所见到的，我们的爬虫（<em>QuotesSpider</em>）是 <em>scrapy.Spider</em> 的子类（<em>QuotesSpider</em> 继承父类），还定义了一些新的属性和方法。</p>
+<ul>
+<li><p><strong>name</strong>：识别爬虫（名字）。在一个项目中一个爬虫的名字必须是唯一的，你不能设置同样的爬虫名字在此项目中。</p>
+</li>
+<li><p><strong>start_request()</strong>：必须返回一个请求（<em>Request</em>）的迭代对象（你也可以返回请求的列表或编写一个生成器函数）爬虫将会从此请求开始爬取。<br>后续的请求将会从这些初始化请求依次生成。</p>
+</li>
+<li><p><strong>parse()</strong>：将调用一个方法来处理每个请求所响应的下载。<br>响应参数是 <em>TextResponse</em> 的一个实例，该实例不仅保存了页面的内容，而且有助于我们对实例作进一步的操作。</p>
+<p> <strong>parse()</strong>方法函数通常用来解析页面返回的响应，提取所爬取数据并生成字典类型数据，还可以寻找新的链接（ <em>URLs</em> ）和从链接中创建想的请求（ <em>Request</em> ）。</p>
+</li>
+</ul>
+<h2 id="怎样运行我们的第一个爬虫"><a href="#怎样运行我们的第一个爬虫" class="headerlink" title="怎样运行我们的第一个爬虫"></a>怎样运行我们的第一个爬虫</h2><p>在命令行中切换到我们项目的根目录，输入下面命令运行我们的爬虫：<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ scrapy crawl quotes</div></pre></td></tr></table></figure><br>此命令运行的是我们创建名为 <em>quotes</em> 的爬虫，我们的爬虫将会向 <em>quotes.toscrape.com</em> 网站提交访问请求，而你将会在命令行中得到类似这样的的返回响应：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">...(此处省略了部分内容)</div><div class="line"><span class="number">2016</span><span class="number">-12</span><span class="number">-16</span> <span class="number">21</span>:<span class="number">24</span>:<span class="number">05</span> [scrapy.core.engine] INFO: Spider opened</div><div class="line"><span class="number">2016</span><span class="number">-12</span><span class="number">-16</span> <span class="number">21</span>:<span class="number">24</span>:<span class="number">05</span> [scrapy.extensions.logstats] INFO: Crawled <span class="number">0</span> page (at <span class="number">0</span> page/min), scraped <span class="number">0</span> itmes (at <span class="number">0</span> items/min)</div><div class="line"><span class="number">2016</span><span class="number">-12</span><span class="number">-16</span> <span class="number">21</span>:<span class="number">24</span>:<span class="number">05</span> [scrapy.extensions.telnet] DEBUG: Telnet console listenting on <span class="number">27.</span></div><div class="line"><span class="number">2016</span><span class="number">-12</span><span class="number">-16</span> <span class="number">21</span>:<span class="number">24</span>:<span class="number">05</span> [scrapy.core.engine] DEBUG: Crawled (<span class="number">404</span>) &lt;GET http:<span class="comment">//quotes.toscrape.com/robots.txt&gt;(referer: None)</span></div><div class="line"><span class="number">2016</span><span class="number">-12</span><span class="number">-16</span> <span class="number">21</span>:<span class="number">24</span>:<span class="number">05</span> [scrapy.core.engine] DEBUG: Crawled (<span class="number">200</span>) &lt;GET http:<span class="comment">//quotes.toscrape.com/page/1/&gt;(referer: None)</span></div><div class="line"><span class="number">2016</span><span class="number">-12</span><span class="number">-16</span> <span class="number">21</span>:<span class="number">24</span>:<span class="number">05</span> [scrapy.core.engine] DEBUG: Crawled (<span class="number">200</span>) &lt;GET http:<span class="comment">//quotes.toscrape.com/page/2/&gt;(referer: None)</span></div><div class="line"><span class="number">2016</span><span class="number">-12</span><span class="number">-16</span> <span class="number">21</span>:<span class="number">24</span>:<span class="number">05</span> [quotes] DEBUG: Save file quotes<span class="number">-1.</span>html</div><div class="line"><span class="number">2016</span><span class="number">-12</span><span class="number">-16</span> <span class="number">21</span>:<span class="number">24</span>:<span class="number">05</span> [quotes] DEBUG: Save file quotes<span class="number">-2.</span>html</div><div class="line"><span class="number">2016</span><span class="number">-12</span><span class="number">-16</span> <span class="number">21</span>:<span class="number">24</span>:<span class="number">05</span> [scrapy.core.engine] INFO: Closing Spider(finished)</div><div class="line"></div><div class="line"></div><div class="line"></div></pre></td></tr></table></figure>
+<p>现在查看当前目录，你将会发现两个新文件：<em>quotes-1.html</em> 和 <em>quotes-2.html</em>，后期我们将会解析两链接文件中保存的HTML内容。</p>
+<p>注意：我们将会在接下来的内容中讲解如何解析HTML网页。</p>
+<h2 id="刚刚的程序代码中到底发生了什么事？"><a href="#刚刚的程序代码中到底发生了什么事？" class="headerlink" title="刚刚的程序代码中到底发生了什么事？"></a>刚刚的程序代码中到底发生了什么事？</h2><p><em>Scrapy</em> 调用了 <em>scrapy.Resquest</em> 类中 <em>Spider</em> (爬虫)的 <em>start_requests</em> 方法。根据每条链接返回的响应，每条链接实例化为 <em>Response</em> 的类同时调用了定义的 <em>parse()</em> 方法把响应作为参数传递。</p>
+<h2 id="使用-start-requests-方法的快捷方式"><a href="#使用-start-requests-方法的快捷方式" class="headerlink" title="使用 start_requests 方法的快捷方式"></a>使用 <em>start_requests</em> 方法的快捷方式</h2><p>你只需要用一列表的 <em>URLs</em> (链接)定义 <em>start_urls</em> 类实例的属性，由 <em>URLs</em> (链接) 中生成 <em>scrapy.Response</em> 项目(实例)而不是去执行 <em>start_requests()</em> 方法。这一列表 <em>URLs</em> (链接)将会被默认执行 <em>start_requests()</em> 方法来为你的爬虫创建初始化请求。<br><figure class="highlight objc"><figcaption><span>quotes_spider.py</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">import scrapy</div><div class="line"></div><div class="line"><span class="keyword">class</span> QuotesSpider(scrapy.Spider):</div><div class="line">    name = <span class="string">"quotes"</span></div><div class="line">    start_urls = [</div><div class="line">             'http://quotes.toscrape.com/page/1/',</div><div class="line">             'http://quotes.toscrape.com/page/2/',</div><div class="line">         ]</div><div class="line">    </div><div class="line">    def parse(<span class="keyword">self</span>, response):</div><div class="line">        page = response.url.split(<span class="string">"/"</span>)[<span class="number">-2</span>]</div><div class="line">        filename = 'quotes-%s.html' % page</div><div class="line">        with open(filename, 'wb') as f:</div><div class="line">            f.write(response.body)</div><div class="line"></div></pre></td></tr></table></figure><br><em>parse()</em> 方法将会被调用来处理每一条 <em>URLs</em> (链接)，即使我们没有特别要求 <em>scrapy</em> 去做，这一执行是因为 <em>parse()</em> 是 <em>Scarpy</em> 的默认调用方法， <em>parse()</em> 方法时处理请求的链接没有特别的返回参数。</p>
+<h2 id="爬取数据"><a href="#爬取数据" class="headerlink" title="爬取数据"></a>爬取数据</h2><p>使用 <em>Scrapy</em> 学习怎样去爬取数据，最好的方法是使用 <em>Scarpy Shell</em> ，命令行运行：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ scrapy shell 'http://quotes.toscrape.com/page/1/'</div></pre></td></tr></table></figure><br>注意：当运行 <em>Scarpy Shell</em> 的时候一定要将链接加到命令行的引号中，否则链接包含在内的参数将不会工作运行。</p>
+<p>在 <em>Windows</em> 系统中，要使用双引号（不能使用单引号）：<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ scrapy shell <span class="string">"http://quotes.toscrape.com/page/1/"</span></div></pre></td></tr></table></figure><br>你将会看到命令行返回如下信息：<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">[ ... Scrapy log here ... ]</div><div class="line"><span class="number">2016</span><span class="number">-09</span><span class="number">-19</span> <span class="number">12</span>:<span class="number">09</span>:<span class="number">27</span> [scrapy.core.engine] DEBUG: Crawled (<span class="number">200</span>) &lt;GET http:<span class="comment">//quotes. toscrape.com/page/1/&gt; (referer: None)</span></div><div class="line">[s] Available Scrapy objects:</div><div class="line">[s] scrapy scrapy module (contains scrapy.Request, scrapy.Selector, etc)</div><div class="line">[s] crawler &lt;scrapy.crawler.Crawler object at <span class="number">0x7fa91d888c90</span>&gt;</div><div class="line">[s] item &#123;&#125;</div><div class="line">[s] request &lt;GET http:<span class="comment">//quotes.toscrape.com/page/1/&gt;</span></div><div class="line">[s] response &lt;<span class="number">200</span> http:<span class="comment">//quotes.toscrape.com/page/1/&gt;</span></div><div class="line">[s] settings &lt;scrapy.settings.Settings object at <span class="number">0x7fa91d888c10</span>&gt;</div><div class="line">[s] spider &lt;DefaultSpider 'default' at 0x7fa91c8af990&gt;</div><div class="line">[s] Useful shortcuts:</div><div class="line">[s] shelp() Shell help (print <span class="keyword">this</span> help)</div><div class="line">[s] fetch(req_or_url) Fetch request (or URL) and update local objects</div><div class="line">[s] view(response) View response <span class="keyword">in</span> a browser</div><div class="line">&gt;&gt;&gt;</div><div class="line"></div></pre></td></tr></table></figure><br>在 <em>Shell</em> 中，你可以尝试使用 <em>CSS</em> 选择返回响应的内容：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt;response.css('title')</div><div class="line">[&lt;Selector xpath='descendant-or-self::title' data='&lt;title&gt;Quotes to Scrape&lt;/title&gt;'&gt;]</div></pre></td></tr></table></figure><br>运行 <em>response.css(‘title’)</em> 的结果是 <em>SelectorList</em> 列表对象，此对象代表了一列表包含 <em>XML/HTML</em> 格式的选择器，同时允许你更进一步地查询提取其中的内容和数据。</p>
+<p>从标题中提取文本，你可以这样做：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt;response.css('title::text').extract()</div><div class="line">['Quotes to Scrape']</div></pre></td></tr></table></figure><br>这里有两点需要我们注意的是：一我们在 <em>CSS</em> 查询中添加 <em>::text</em> ，意味着我们只提取在 <em><title></title></em> 中的文本元素。如果我们不指定提取 <em>::text</em> ，我们将会得到包括标签在内的整个 <em>title</em> 标签元素:<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt;response.css('title').extract()</div><div class="line">['&lt;title&gt;Quotes to Scrape&lt;/title&gt;']</div></pre></td></tr></table></figure><br>二是 <em>.extract()</em> 返回的是列表，因为我们处理的是 <em>SelectorList</em> 实例对象。当你只想要第一个返回结果，你可以使用 <em>.extract_first()</em> ：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt;response.css('title::text').extract_first()</div><div class="line">'Quotes to Scrape'</div></pre></td></tr></table></figure><br>另外你还可以这样写：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt;response.css('title::text')[0].extract()</div><div class="line">'Quotes to Scrape'</div></pre></td></tr></table></figure><br>然而，使用 <em>.extract_first()</em> 可避免一个是 <em>IndexError</em> （索引值错误）和返回 <em>None</em> （空值），当它没有找到相关元素。</p>
+<p>这里值得注意的是：对于绝大多数的爬虫代码，你希望它们在查询网页对错误具有很好的适应性，所以即使部分内容无法爬取，至少你也可以得到部分的数据。</p>
+<p>除了 <em>extract()</em> 和 <em>extract_first()</em> 方法外，你也可以使用 <em>re()</em> 方法，使用正则表达式方法提取数据：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt;response.css('title::text').re(r'Quotes.*')</div><div class="line">['Quotes to Scrape']</div><div class="line">&gt;&gt;&gt;response.css('title::text').re(r'Q\w+')</div><div class="line">['Quotes']</div><div class="line">&gt;&gt;&gt;response.css('title::text').re(r'(\w+)  to (\w+)')</div><div class="line">['Quotes','Scrape']</div></pre></td></tr></table></figure><br>为了使用合适的 <em>CSS</em> 选择器，从 <em>Shell</em> 中通过输入 <em>View(response)</em> 打开你的浏览器你可能会会发现这是很好打开响应网页的方法。你可以使用浏览器中的开发者工具，像是 <em>Firebug</em> 。</p>
+<p><em>Selector Gadget</em> 在许多浏览器中也是一个很好的工具来寻找看得将的网页元素的<em>CSS</em>选择器。</p>
+<h2 id="简单介绍XPath的使用："><a href="#简单介绍XPath的使用：" class="headerlink" title="简单介绍XPath的使用："></a>简单介绍<em>XPath</em>的使用：</h2><p>除了 <em>CSS</em> 外， <em>Scrapy</em> 选择器还支持 <em>XPath</em> 的表达：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt;response.xpath('//title')</div><div class="line">[&lt;Selector xpath='//title' data='&lt;title&gt;Quotes to Scrapy&lt;/title&gt;'&gt;]</div><div class="line">&gt;&gt;&gt;response.xpath('//title/text()').extract_first()</div><div class="line">'Quotes to Scrape'</div></pre></td></tr></table></figure><br><em>XPath</em> 的表达式非常强大的，同时也是 <em>Scrapy</em> 选择器的基础（元件）。事实上，在 <em>Scrapy</em> 中 <em>CSS</em> 选择器是经过转换为 <em>XPath</em> 再输出结果的。如果你阅读了选择器的说明（源代码）你就知道这一点。</p>
+<p>虽然 <em>XPath</em> 没有 <em>CSS</em> 受欢迎，但是 <em>XPath</em> 的表达更加强大，因为除了能操作标签结构外，它还能查看其中的内容。使用 <em>XPath</em> ，你可能要提取像 <strong>“下一页”</strong> 链接的功能。 <em>XPath</em> 使得爬取的任务易于执行，同时我们建议你去学习 <em>XPath</em> 的使用方法即使你已经学会了 <em>CSS</em> 选择器的使用，这将会使你爬取信息的更容易。</p>
+<p>我们不会在这讲太多的 <em>XPath</em> 的使用，但是你可以阅读 <em>using XPath with Scarpy Select here</em> (P42)。去学习更多的关于 <em>XPath</em> ，我们建议你阅读<a href="http://zvon.org/comp/r/tut-XPath_1.html" target="_blank" rel="external"> <em>this tutorial to learn XPath through example</em> </a>和<a href="http://plasmasturm.org/log/xpath101/" target="_blank" rel="external"> <em>this tutorial to learn “how to think in XPath”</em></a></p>
+<h2 id="提取语录和作者"><a href="#提取语录和作者" class="headerlink" title="提取语录和作者"></a>提取语录和作者</h2><p>现在你已经对选择器和提取内容有一定的认识，让我们通过写代码完成我们的爬虫来从网页中提取语录。<br>每条在<a href="http://quotes.scrape.com" target="_blank" rel="external"> <em>http://quotes.toscrape.com</em> </a>网站中的语录，都是用 <em>HTML</em> 元素来表示的，就像是这样:<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">&lt;div <span class="keyword">class</span>=<span class="string">"quote"</span>&gt;</div><div class="line">    &lt;span class="text"&gt;“The world as we have created it is a process of our thinking. It cannot be changed without changing our thinking.”&lt;/span&gt;</div><div class="line">    &lt;span&gt;</div><div class="line">        by &lt;small class="author"&gt;Albert Einstein&lt;/small&gt;</div><div class="line">        &lt;a href="/author/Albert-Einstein"&gt;(about)&lt;/a&gt;</div><div class="line">    &lt;/span&gt;</div><div class="line">    &lt;div <span class="keyword">class</span>=<span class="string">"tags"</span>&gt;</div><div class="line">        Tags:</div><div class="line">        &lt;a class="tag" href="/tag/change/page/1/"&gt;change&lt;/a&gt;</div><div class="line">        &lt;a class="tag" href="/tag/deep-thoughts/page/1/"&gt;deep-thoughts&lt;/a&gt;</div><div class="line">        &lt;a class="tag" href="/tag/thinking/page/1/"&gt;thinking&lt;/a&gt;</div><div class="line">        &lt;a class="tag" href="/tag/world/page/1/"&gt;world&lt;/a&gt;</div><div class="line">    &lt;/div&gt;</div><div class="line">&lt;/div&gt;</div><div class="line"></div><div class="line"></div></pre></td></tr></table></figure><br>让我们打开 <em>scrapy shell</em> 来操作如何提取我们想要的数据：<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ scrapy shell <span class="string">"http://quotes.toscrape.com"</span></div></pre></td></tr></table></figure><br>我们得到了引用 <em>HTML</em> 元素的选择器列表：<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt;response.css(<span class="string">"div.quote"</span>)</div></pre></td></tr></table></figure><br>上面的查询返回的每个选择器都允许我们在子元素上运行更多的查询。让我们指定第一个选择器为变量，如此一来我们就可以在指定的 <em>quote</em> 变量中直接运行我们的 <em>CSS</em> 选择器。<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt;quote = response.css(<span class="string">"div.quote"</span>)[<span class="number">0</span>]</div></pre></td></tr></table></figure><br>现在让我们从刚创建的 <em>quote</em> 对象中提取 <em>title</em> ， <em>author</em> ， <em>tags</em> ：<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; title = quote.css(<span class="string">"span.text::text"</span>).extract_first()</div><div class="line">&gt;&gt;&gt;title</div><div class="line">'"The world as  we have create it is a process of our thinking.It cannot be changed without changing our thinking."'</div><div class="line">&gt;&gt;&gt;author = quote.css(<span class="string">"small.author::text"</span>).extract_first()</div><div class="line">&gt;&gt;&gt;author</div><div class="line">'Albert Einstein'</div><div class="line"></div></pre></td></tr></table></figure><br>因为标签是字符串列表，我们可以用 <em>.extract()</em> 方法来提取它们：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt;tags = quote.css(<span class="string">"div.tags a.tag::text"</span>).extract()</div><div class="line">&gt;&gt;&gt;tags</div><div class="line">['change','deep-thoughts','thinking','world']</div></pre></td></tr></table></figure><br>理解了如何提取 <em>quote</em> 对象中的每条信息，我们现在可以提取全部信息并把它们放入 <em>Python</em> 的字典中。<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">&gt;&gt;&gt;<span class="keyword">for</span> quote <span class="keyword">in</span> response.css(<span class="string">"div.quote"</span>):</div><div class="line">       text = quote.css(<span class="string">"span.text::text"</span>).extract_first()</div><div class="line">       author = quote.css(<span class="string">"small.author::text"</span>).extract_first()</div><div class="line">       tags = quote.css(<span class="string">"div.tags a.tag::text"</span>).extract()</div><div class="line">       print(dict(text = text, author = author, tags = tags))</div><div class="line">       &#123;'tags': ['change', 'deep-thoughts', 'thinking', 'world'],'author': 'Albert Einstein', 'text': '“The world as we have created it is a process of our thinking. It cannot be changed without changing our thinking.”'&#125;</div><div class="line">       &#123;'tags': ['abilities', 'choices'], 'author': 'J.K. Rowling', 'text': '“It is ourchoices, Harry, that show what we truly are, far more than our abilities.”'&#125;</div><div class="line">       ... a few more of these, omitted <span class="keyword">for</span> brevity</div><div class="line">&gt;&gt;&gt;</div></pre></td></tr></table></figure></p>
+<h2 id="在我们的爬虫中提取数据："><a href="#在我们的爬虫中提取数据：" class="headerlink" title="在我们的爬虫中提取数据："></a>在我们的爬虫中提取数据：</h2><p>让我们回到爬虫。直到现在，还未提取详细的数据，我们仅仅保存了 <em>HTML</em> 页面在电脑中。让我们在爬虫中整合具有逻辑的数据。</p>
+<p>一个 <em>Scrapy</em> 爬虫生成了许多包含在页面中数据的字典。要做到这一点，我们在回调函数中使用 <em>yield</em> （ <em>Python</em> 的关键字），正如你所见：<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">import scrapy</div><div class="line"><span class="keyword">class</span> QuotesSpider(scrapy.Spider):</div><div class="line">    name = <span class="string">"quotes"</span></div><div class="line">    start_urls = [</div><div class="line">        'http://quotes.toscrape.com/page/1/',</div><div class="line">        'http://quotes.toscrape.com/page/2/',</div><div class="line">    ] </div><div class="line">    def parse(<span class="keyword">self</span>,response):</div><div class="line">        for quote in response.css('div.quote'):</div><div class="line">            yield&#123;</div><div class="line">                'text':quote.css('span.text::text').extract_first(),</div><div class="line">                'author':quote.css('small.author:text').extract_first(),</div><div class="line">                'tags':quote.css('div.tags a.tag:text').extract(),</div><div class="line">            &#125;</div></pre></td></tr></table></figure><br>如果你运行此爬虫，它将会输出爬取的数据和输入日志：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="number">2016</span><span class="number">-09</span><span class="number">-19</span> <span class="number">18</span>:<span class="number">57</span>:<span class="number">19</span> [scrapy.core.scraper] DEBUG: Scraped from &lt;<span class="number">200</span> http:<span class="comment">//quotes. toscrape.com/page/1/&gt;</span></div><div class="line">&#123;'tags': ['life', 'love'], 'author': 'André Gide', 'text': '“It is better to be hated for what you are than to be loved for what you are not.”'&#125;</div><div class="line"><span class="number">2016</span><span class="number">-09</span><span class="number">-19</span> <span class="number">18</span>:<span class="number">57</span>:<span class="number">19</span> [scrapy.core.scraper] DEBUG: Scraped from &lt;<span class="number">200</span> http:<span class="comment">//quotes.toscrape.com/page/1/&gt;</span></div><div class="line">&#123;'tags': ['edison', 'failure', 'inspirational', 'paraphrased'], 'author': 'Thomas A.Edison', 'text': "“I have not failed. I've just found 10,000 ways that won't work.”"&#125;</div></pre></td></tr></table></figure></p>
+<h1 id="储存爬取到的数据"><a href="#储存爬取到的数据" class="headerlink" title="储存爬取到的数据"></a>储存爬取到的数据</h1><p>储存数据最简单的方法是使用输出 <em>Feed</em> （输出文件），命令行中使用以下的命令：<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ scrapy crawl quotes -o quotes.json</div></pre></td></tr></table></figure><br>这将会生成包含所有爬取项目名为 <em>quotes.json</em> 文件，以 <em>JSON</em> 格式序列化。</p>
+<p>由于历史因素， <em>Scrapy</em> 应用于给定的文件而不是覆盖它的内容。如果你在没有事先移除生成的 <em>JSON</em> 文件下运行此命令两次，你将会得到一个损坏的 <em>JSON</em> 文件。</p>
+<p>你也可以使用其他的格式数据，比如说 <em>JSON Lines</em> ：<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ scrapy crawl quotes -o qutoes.jl</div></pre></td></tr></table></figure><br><em>JSON Lines</em> 格式是方便易用的，就像是流（ <em>stream</em> ）一样，你可以简单地在其中添加记录数据。</p>
+<p>当你运行上面命令两次，它不会有 <em>JSON</em> 格式文件的问题。同时，每一个记录的数据都是单独一行，你无需在内存中配置任何东西即可加载大型文件，在命令行中有像 <em>JQ</em> 一类的工具协助操作。</p>
+<p>在小型项目中（像本教程）已经是足够使用了。然而如果你想在爬取到的项目中开展更复杂的东西，你可以写一个 <em>Item Pipeline</em> 。当爬虫项目被创建时，已经生成了一个 <em>Item Pipeline</em> 文件在 <em>tutorial/pipelines.py</em> 中。虽然你不需要实现任何的 <em>item pipelines</em> ，你不是想储存爬取的项目，但是文件还是被创建了。</p>
+<h1 id="追踪链接——爬取后续链接"><a href="#追踪链接——爬取后续链接" class="headerlink" title="追踪链接——爬取后续链接"></a>追踪链接——爬取后续链接</h1><p>让我们讨论一下，你希望获得整个网站的语录而不是仅仅的爬取开始 <em><a href="http://quotes.toscrape.com" target="_blank" rel="external">http://quotes.toscrape.com</a></em> ，给的两个网页。</p>
+<p>现在你理解了如何从网页中提取数据，让我们了解如何从开始的链接来追踪后续链接。</p>
+<p>首先是从网页中提取我们想要追踪的链接。检查测试我们的网页，我们可以看到下一页的链接，以 <em>HTML</em> 标记：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;ul <span class="keyword">class</span> = <span class="string">"pager"</span>&gt;</div><div class="line">    &lt;li <span class="keyword">class</span> = <span class="string">"next"</span>&gt;</div><div class="line">        &lt;a href = "/page/2/"&gt;Next &lt;span aria-hidden = "true"&gt;&amp;rarr;&lt;/span&gt;&lt;/a&gt;</div><div class="line">    &lt;/li&gt;</div><div class="line">&lt;/ul&gt;</div></pre></td></tr></table></figure><br>我们可以尝试在 <em>shell</em> 中提取它：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt;response.css('li.next a').extract_first()</div><div class="line">'&lt;a href = "/page/2/"&gt;Next &lt;span aria-hidden = "true"&gt;→&lt;/span&gt;&lt;/a&gt;'</div></pre></td></tr></table></figure><br>我们提取了标签元素，但是我们想要其中属性的 <em>href</em> 值。为此， <em>Scarpy</em> 提供 <em>CSS</em> 的扩展应用让我们提取属性中的内容，像这样：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt;response.css('li.next a::attr(href)').extract_first()</div><div class="line">'/page/2/'</div></pre></td></tr></table></figure><br>现在修改我们的爬虫来递归下一页的功能，从网页中提取数据：<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">import scrapy</div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">class</span> QuotesSpider(scrapy.Spider):</div><div class="line">    name = <span class="string">"quotes"</span></div><div class="line">    start_urls = [</div><div class="line">        'http://quotes.toscrape.com/page/1/',</div><div class="line">    ]</div><div class="line"></div><div class="line">    def parse(<span class="keyword">self</span>, response):</div><div class="line">        for quote in response.css('div.quote'):</div><div class="line">            yield&#123;</div><div class="line">                'text':quote.css('span.text::text').extract_first(),</div><div class="line">                'author':quote.css('span.text:text').extract_first(),</div><div class="line">                'tags':quote.css('div.tags a.tag::text').extract(),</div><div class="line">            &#125;</div><div class="line">        next_page = response.css('li.next a::attr(href)').extract_first()</div><div class="line">        <span class="keyword">if</span> next_page is not None:</div><div class="line">            next_page = response.urljoin(next_page)</div><div class="line">            yield scrapy.Request(next_page, callback = <span class="keyword">self</span>.parse)</div></pre></td></tr></table></figure><br>现在提取数据后， <em>parse()</em> 方法查找下一页的链接，以 <em>urljoin()</em> 方法建立网站完整的 <em>URL</em> ，向下一页生成新请求，为下一页的链接提取数据注册它本身为返回函数同时保持爬取整个网站。</p>
+<p>你看到的是 <em>Scrapy</em> 追踪链接的机制：当你在返回函数中生成请求， <em>Scrapy</em> 将会安排请求被发送和注册返回函数被执行，直到请求结束。</p>
+<p>使用这方法，你可以搭建复杂的爬虫来追踪你需要的深度，同时在你访问的网页中提取数据。</p>
+<p>在我们的例子中，它创建了一个循环，追踪所有网页的链接——让我们来爬取具有标记页数的博客、论坛和其他网站。</p>
+<h2 id="创建请求的快捷方式"><a href="#创建请求的快捷方式" class="headerlink" title="创建请求的快捷方式"></a>创建请求的快捷方式</h2><p>作为创建请求的捷径，你可以使用 <em>response.follow</em> ：<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">import scrapy</div><div class="line"></div><div class="line"><span class="keyword">class</span> QuotesSpider(scrapy.Spider):</div><div class="line">    name = <span class="string">"quotes"</span></div><div class="line">    start_urls = [</div><div class="line">        'http://quotes.toscrape.com/page/1/',</div><div class="line">    ]</div><div class="line">    def parse(<span class="keyword">self</span>,response):</div><div class="line">        for quote in response.css('div.quote'):</div><div class="line">            yield&#123;</div><div class="line">                'text':quote.css('span.text::text').extract_first(),</div><div class="line">                'author':quote.css('span small::text').extract_first(),</div><div class="line">                'tags':quote.css('div.tags a.tag::text').extract(),</div><div class="line">            &#125;</div><div class="line">        next_page = response.css('li.next a::attr(href)').extract_first()</div><div class="line">        <span class="keyword">if</span> next_page is not None:</div><div class="line">           yield response.follow(next_page,callback = <span class="keyword">self</span>.parse)</div></pre></td></tr></table></figure><br>与 <em>scrapy.Request</em> 不同， <em>response.follow</em> 支持网页直接跳转，不需要 <em>urljoin</em> 方法。需要注意的是 <em>response.follow</em> 只返回请求实例；你还是要生成这个请求的。</p>
+<p>你也可以向选择器传递一个 <em>response.follow</em> 而不是字符串；此选择器应该可提取重要的属性：<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt;for href in response.css('li.next a::attr(href)'):</div><div class="line">       yield response.follow(href, callback = <span class="keyword">self</span>.parse)</div></pre></td></tr></table></figure><br>对于 <em><a\></a\></em> 标签元素，这里有个简单方法：<em>response.follow</em> 自动使用了它们的 <em>href</em> 属性。所以代码更简洁：<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt;for a in response.css('li.next a'):</div><div class="line">       yield response.follow(a,callback = <span class="keyword">self</span>.parse)</div></pre></td></tr></table></figure></p>
+<p>注意： <em>resposne.follow(response.css(‘li.next a’))</em> 是无效值，因为 <em>response.css</em> 返回的是具有选择器所有结果的一个类似列表的对象，并非单一的选择器。像例子中的一个 <em>for</em> 循环，也可使用 <em>response.follow(response.css(‘li.next a’)[0])</em> 。</p>
+<h2 id="更多的例子和模板"><a href="#更多的例子和模板" class="headerlink" title="更多的例子和模板"></a>更多的例子和模板</h2><p>这里是另外一个爬虫说明的返回函数和追踪链接，这次爬取的是作者的信息：<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">import scrapy</div><div class="line"></div><div class="line"><span class="keyword">class</span> AuthorSpider(scrapy.Spider):</div><div class="line">     name = 'author'</div><div class="line">     start_urls = ['http://quotes.toscrape.com/']</div><div class="line"></div><div class="line">     def parse(<span class="keyword">self</span>,response):</div><div class="line">         <span class="meta">#follow links to author pages</span></div><div class="line">         for href in response.css('.author+a::attr(href)'):</div><div class="line">             yield response.follow(href,<span class="keyword">self</span>.parse_author)</div><div class="line"></div><div class="line">         <span class="meta">#follow pagination links</span></div><div class="line">         for href in response.css('li.next a::attr(href)'):</div><div class="line">             yield response.follow(href,<span class="keyword">self</span>.parse)</div><div class="line">     </div><div class="line">     def parse_author(<span class="keyword">self</span>,response):</div><div class="line">         def extract_with_css(query):</div><div class="line">             <span class="keyword">return</span> response.css(query).extract_first().strip()</div><div class="line"></div><div class="line">         yield&#123;</div><div class="line">             'name':extract_with_css('h3.author-title::text'),</div><div class="line">             'birthdate':extract_with_css('.author-born-date::text'),</div><div class="line">             'bio':extract_with_css('.author-description::text'),</div><div class="line">         &#125;</div></pre></td></tr></table></figure><br>此爬虫将会在网站的主页开始爬取，它将会追踪所有到作者页面的链接并对它调用<em>parse_author</em>函数，同时被标记网页的链接也会被调用<em>parse</em>函数，像我们之前所见到的一样。</p>
+<p>在这我们传递<em>response.follow</em>作为位置函数参数使得代码更短；当然你也可以使用<em>scrapy.Request</em>。</p>
+<p><em>parse_author</em>函数定义了一个帮助函数来从<em>CSS</em>查询中提取和清洗数据信息同时以作者数据信息生成<em>Python</em>字典。</p>
+<p>此爬虫演示了另外一个有趣的东西，即使许多语录都是同一个作者，我们不必担心多次访问同一作者的网页。<em>Scrapy</em>过滤器默认过滤在<em>URLs</em>中已访问的链接和相同的请求，避免由于多次访问服务器的问题而造成访问限制。但是这可以在<em>DUPEFILTER_CLASS</em>中被修改配置。</p>
+<p>值得高兴的是你现在对<em>Scrapy</em>的追踪链接和回调函数的原理与功能有一定的理解。</p>
+<p>作为另一个爬虫例子，它利用追踪链接的原理，查看<em>CrawlSpider</em>的类，对于一个通用的爬行器，它实现了一个小型规则引擎，你可以在它上面编写爬行器。</p>
+<p>同时，一个通用的模板是从至少一个网页去创建一个数据项目，来使用传递其它数据的函数。</p>
+<h1 id="使用爬虫参数"><a href="#使用爬虫参数" class="headerlink" title="使用爬虫参数"></a>使用爬虫参数</h1><p>你可以使用你的爬虫提供命令行参数，当爬虫运行时通过使用<em>-a</em>选项：<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ scrapy crawl quotes -o quotes-humor.json -a tag=humor</div></pre></td></tr></table></figure><br>这些参数将会传递给爬虫的<em>__init__</em>方法同时默认设定为爬虫的属性，在此例子中，传递给<em>tag</em>的参数将会传递给<em>self.tag</em>(实例中的<em>tag</em>)。你可以使用此方法使你的爬虫只爬取指定的标签，基于参数构建的<em>URL</em>中。<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">import scrapy</div><div class="line"></div><div class="line"><span class="keyword">class</span> QuotesSpider(scrapy.Spider):</div><div class="line">    name = <span class="string">"quotes"</span></div><div class="line"></div><div class="line">    def start_requests(<span class="keyword">self</span>):</div><div class="line">        url = 'http://quotes.toscrapy.com/'</div><div class="line">        tag = a.getarrt(self,'tag',None)</div><div class="line">        <span class="keyword">if</span> tag is not None:</div><div class="line">           url = url + 'tag/' + tag</div><div class="line">        yield scrapy.Request(url,<span class="keyword">self</span>.parse)</div><div class="line"></div><div class="line">    def parse(<span class="keyword">self</span>, response):</div><div class="line">        for quote in response.css('div.quote'):</div><div class="line">            yield&#123;</div><div class="line">                'text':quote.css('span.text::text').extract_first(),</div><div class="line">                'author':quote.css('small.author::text').extract_first(),</div><div class="line">           &#125;</div><div class="line"></div><div class="line">        next_page = response.css('li.next a::attr(href)').extract_first()</div><div class="line">        <span class="keyword">if</span> next_page is not None:</div><div class="line">           yield response.follow(next_page, <span class="keyword">self</span>.parse)</div></pre></td></tr></table></figure><br>如果你向爬虫传递<em>tag=humor</em>参数，你将会发现爬虫只访问<em>URLs</em>中的<em>humor</em>标签，比如说是<em><a href="http://quotes.toscrapy.com/tag/humor" target="_blank" rel="external">http://quotes.toscrapy.com/tag/humor</a></em>。</p>
+<p>你可以在这里学习更多关于爬虫参数设置的内容（P35）。</p>
+<h1 id="下一步"><a href="#下一步" class="headerlink" title="下一步"></a>下一步</h1><p>此教程仅仅讲了一些<em>Scrapy</em>的基础，同时还有许多其他的功能特性还未提到。访问在<em>Scarpy at glance</em>中的<strong>更多内容（P7）</strong>来浏览概述更重要的部分。</p>
+<p>你可以继续从章节基础概念来学习更多关于命令行工具、爬虫、选择器和其他在此教程中没有提到的像是建立爬虫数据结构模型。如果你更喜欢从例子中学习的话，请访问<strong>例子（21）</strong>章节。</p>
+<h1 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h1><p>最好的学习方法是举例子，对于<em>Scrapy</em>的学习也不例外。由于这样我们提供一个名为<em>quotesbot</em>额项目例子来让你操作和学习关于<em>Scrapy</em>更多的内容。为爬取<em><a href="http://quotes.toscrape.com" target="_blank" rel="external">http://quotes.toscrape.com</a></em>，它包括了两只爬虫，一只使用<em>CSS</em>选择器，另一只使用<em>Xpath</em>表达式。</p>
+<p><em>qutoesbot</em>项目在<em><a href="http://github.com/scrapy/quotesbot中，你可以在" target="_blank" rel="external">http://github.com/scrapy/quotesbot中，你可以在</a></em>README*了解其基本内容。</p>
+<p>如果熟悉<em>git</em>语法的话你可以检出代码。否则你可以下载其<a href="https://github.com/scrapy/quotesbot/archive/master.zip" target="_blank" rel="external">压缩文件</a>。</p>
+<ul>
+<li><em>Scrapy at glance</em>  理解<em>Scrapy</em>和<em>Scrapy</em>如何帮助你爬取网页内容</li>
+<li><em>Installation guide</em> 将<em>Scrapy</em>下载到你的计算机中</li>
+<li><em>Scrapy Tutorial</em> 编写你的第一个爬虫项目</li>
+<li><em>Example</em> 从<em>Scrapy</em>成品项目中学习操作</li>
+</ul>
+
+  </article>
+  <div class="random-toc-area">
+  <button class="btn-hide-toc btn-hide-toc-show" style="display: none" onclick="TOCToggle()">显示目录</button>
+  <button class="btn-hide-toc btn-hide-toc-hide" onclick="TOCToggle()">隐藏目录</button>
+  <div class="random-toc">
+    <h2>目录</h2>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#个人想法："><span class="toc-text">个人想法：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#官文的优点："><span class="toc-text">官文的优点：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#前言："><span class="toc-text">前言：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#创建爬虫项目"><span class="toc-text">创建爬虫项目</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#我们的第一个爬虫"><span class="toc-text">我们的第一个爬虫</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#怎样运行我们的第一个爬虫"><span class="toc-text">怎样运行我们的第一个爬虫</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#刚刚的程序代码中到底发生了什么事？"><span class="toc-text">刚刚的程序代码中到底发生了什么事？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用-start-requests-方法的快捷方式"><span class="toc-text">使用 start_requests 方法的快捷方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#爬取数据"><span class="toc-text">爬取数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#简单介绍XPath的使用："><span class="toc-text">简单介绍XPath的使用：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#提取语录和作者"><span class="toc-text">提取语录和作者</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#在我们的爬虫中提取数据："><span class="toc-text">在我们的爬虫中提取数据：</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#储存爬取到的数据"><span class="toc-text">储存爬取到的数据</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#追踪链接——爬取后续链接"><span class="toc-text">追踪链接——爬取后续链接</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#创建请求的快捷方式"><span class="toc-text">创建请求的快捷方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#更多的例子和模板"><span class="toc-text">更多的例子和模板</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#使用爬虫参数"><span class="toc-text">使用爬虫参数</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#下一步"><span class="toc-text">下一步</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#例子"><span class="toc-text">例子</span></a></li></ol>
+  </div>
+</div>
+
+  
+<nav id="pagination">
+  
+    <a href="/2018/04/15/初探MySql/" class="prev">&larr; 上一篇 初探MySql</a>
+  
+
+  
+
+  
+    <a href="/2017/10/06/非程序员15分钟三步Github-Hexo快速搭建免费个人博客/" class="next">下一篇 非程序员15分钟三步Github-Hexo快速搭建免费个人博客 &rarr;</a>
+  
+</nav>
+
+  <!-- JiaThis Button BEGIN -->
+
+<!-- JiaThis Button END -->
+
+
+      
+      
+    </div>
+  </div>
+
+  <div id="bottom-outer">
+    <div id="bottom-inner">
+      Site by HowinLoo using
+      <a href="http://hexo.io">Hexo</a> & <a href="https://github.com/stiekel/hexo-theme-random">Random</a>
+      <br>
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+
+<div id="user-card">
+  <div class="center-field">
+    <img class="avatar" src="https://s1.ax1x.com/2017/10/08/3gPL6.jpg">
+    <p id="description">Keep It Simple Stupid</p>
+    <ul class="social-icon">
+  
+  
+    <li>
+      <a href="http://weibo.com/2102659825/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1">
+        
+          <i class="icon iconfont weibo">&#xe602;</i>
+        
+      </a>
+    </li>
+  
+    <li>
+      <a href="https://www.instagram.com/howin_loo/">
+        
+          <i class="icon iconfont instagram">&#xe613;</i>
+        
+      </a>
+    </li>
+  
+    <li>
+      <a href="https://github.com/HowinLoo">
+        
+          <i class="icon iconfont github">&#xe606;</i>
+        
+      </a>
+    </li>
+  
+    <li>
+      <a href="http://chensd.com/feed">
+        
+          <i class="icon iconfont rss">&#xe60e;</i>
+        
+      </a>
+    </li>
+  
+</ul>
+  </div>
+</div>
+
+
+<div id="btn-view">Hide</div>
+
+<script>
+// is trigger analytics / tongji script
+var isIgnoreHost = false;
+
+if(window && window.location && window.location.host) {
+  isIgnoreHost = ["localhost","127.0.0.1"].some(function(address){
+    return 0 === window.location.host.indexOf(address);
+  });
+}
+
+var isTriggerAnalytics = !( true && isIgnoreHost );
+
+</script>
+
+
+
+
+  
+  
+    <script src="/js/jquery-2.2.3.min.js"></script>
+  
+    <script src="/js/vegas.min.js"></script>
+  
+    <script src="/js/random.js"></script>
+  
+    <script src="/js/highlight.pack.js"></script>
+  
+    <script src="/js/jquery.mousewheel.pack.js"></script>
+  
+    <script src="/js/jquery.fancybox.pack.js"></script>
+  
+    <script src="/js/jquery.fancybox-thumbs.js"></script>
+  
+    <script src="/js/plyr.js"></script>
+  
+
+<script>
+
+  // fancybox
+  var backgroundImages = [];
+  
+  $('#post').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox') || $(this).parent().hasClass('fancybox-thumb')) return;
+      var alt = this.alt || this.title;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'post' + i);
+    });
+  });
+  $(".fancybox").fancybox();
+
+var vegasConfig = {"preload­Image":true,"transition":["slideLeft2","slideRight2","flash2"],"timer":true,"delay":5000,"shuffle":true,"count":28};
+var unsplashConfig = {"gravity":"north"};
+// is show background images
+var turnoffBackgroundImage = false;
+
+
+
+  turnoffBackgroundImage = true;
+
+
+var backgroundColor = "34495E";
+
+$(".fancybox-thumb").fancybox({
+  prevEffect: 'none',
+  nextEffect: 'none',
+  helpers: {
+    title: {
+      type: 'outside'
+    },
+    thumbs: {
+      width: 50,
+      height: 50
+    }
+  }
+});
+
+// show video with plyr
+$(".video-container iframe").each(function(i){
+  var url = $(this).attr('src');
+  var id = url.split('/').pop();
+  var plyrContainer = document.createElement('div');
+  plyrContainer.className = 'plyr';
+  var plyrElement = document.createElement('div');
+  plyrElement.dataset.videoId = id;
+  switch(true) {
+    case url.search('youtube.com') >= 0:
+      plyrElement.dataset.type = 'youtube';
+      break;
+    case url.search('vimeo.com') >= 0:
+      plyrElement.dataset.type = 'vimeo';
+      break;
+    default:
+      return;
+  };
+  plyrContainer.appendChild(plyrElement);
+  $(this).parent().html(plyrContainer);
+});
+plyr.setup('.plyr', {iconUrl: '/css/sprite.svg'});
+</script>
+</body>
+</html>
+
